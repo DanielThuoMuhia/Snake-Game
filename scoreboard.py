@@ -10,6 +10,9 @@ class ScoreBoard(Turtle):
         """Initialize the scoreboard object as a subclass of Turtle."""
         super().__init__()  # Call the parent class (Turtle) initializer
         self.score = 0  # Initialize the score to 0
+        with open("data.txt") as data:
+            self.high_score = int(data.read())
+        self.high_score = 0
         self.color("white")  # Set the text color to white
         self.penup()  # Lift the pen to avoid drawing lines
         self.goto(0, 270)  # Position the scoreboard at the top center of the screen
@@ -18,7 +21,20 @@ class ScoreBoard(Turtle):
 
     def update_scoreboard(self):
         """Update the scoreboard with the current score."""
-        self.write(f"Score: {self.score}", align=ALIGNMENT, font=FONT)  # Display the current score on the screen
+        self.clear()
+        self.write(f"Score: {self.score} highscore: {self.high_score}", align=ALIGNMENT, font=FONT)  # Display the current score on the screen
+
+
+    def reset(self):
+        if self.score > self.high_score:
+            self.high_score = self.score
+            with open("data.txt", "w") as data:
+                data.write(f"{self.high_score}")
+        self.score = 0
+        self.update_scoreboard()    
+
+
+
 
     def game_over(self):
         """Display the 'GAME OVER' message at the center of the screen."""
